@@ -1,0 +1,57 @@
+{
+    "telemetry.telemetryLevel": "off",
+    "editor.fontSize": 20,
+    "window.zoomLevel": 1.5,
+    "workbench.startupEditor": "none",
+    "editor.lineNumbers": "relative", 
+    "vim.easymotion": true,
+    "vim.incsearch": true,
+    "vim.useSystemClipboard": true,
+    "vim.hlsearch": true,
+    "vim.leader": "<space>",
+
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+        "before": ["<leader>", "d"],
+        "after": ["d", "d"]
+        },
+        {
+        "before": ["<C-n>"],
+        "commands": [":nohl"]
+        },
+        {
+        "before": ["K"],
+        "commands": ["lineBreakInsert"],
+        "silent": true
+        },
+
+        {
+        "before": ["<leader>", "t"],
+        "commands": ["workbench.action.toggleSidebarVisibility"]
+        },
+        {
+        "before": ["<leader>", "f"],
+        "commands": [ "revealInExplorer" ],
+        },
+        {
+        "before": ["<leader>", "r", "f"],
+        "commands": [ "fileutils.renameFile" ]
+        }
+    ],
+
+    "vim.visualModeKeyBindings": [
+        {
+            "before": ["<leader>", "<leader>", "c"],
+            "commands": [
+                "editor.action.commentLine",
+                "extension.vim_escape"
+            ],
+        }
+    ],
+    "vim.handleKeys": {
+        "<C-a>": false,
+        "<C-f>": false
+    },
+    "workbench.sideBar.location": "right",
+    "editor.minimap.enabled": false,
+}

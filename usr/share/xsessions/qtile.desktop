@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Name=qtile
+Comment=Use this session to run Xubuntu as your desktop environment
+Exec=/home/swayam/.local/bin/qtile start
+Type=Application
+DesktopNames=qtile
