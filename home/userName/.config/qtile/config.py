@@ -1,12 +1,35 @@
 import os
 import subprocess
 
+from time import time
+from pathlib import Path
+
 from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 
+
+def screenshot(save=True, copy=True):
+    def f(qtile):
+        path = Path.home() / "Pictures"
+        path /= f"screenshot_{str(int(time() * 100))}.png"
+        shot = subprocess.run(["maim", "--select", "|"], stdout=subprocess.PIPE)
+
+        if save:
+            with open(path, "wb") as sc:
+                sc.write(shot.stdout)
+
+        if copy:
+            subprocess.run(
+                ["xclip", "-selection", "clipboard", "-t", "image/png"],
+                input=shot.stdout,
+            )
+
+    return f
+
+
 mod = "mod4"
-terminal = "kitty"
+terminal = "rxvt-unicode"
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -16,17 +39,26 @@ keys = [
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
-    Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
+    # Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
-    Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
-    Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
+    Key(
+        [mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"
+    ),
+    Key(
+        [mod, "shift"],
+        "l",
+        lazy.layout.shuffle_right(),
+        desc="Move window to the right",
+    ),
     Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
     Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
     Key([mod, "control"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
-    Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
+    Key(
+        [mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"
+    ),
     Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     # Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
@@ -47,10 +79,45 @@ keys = [
     Key([mod, "shift"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "shift"], "x", lazy.shutdown(), desc="Shutdown Qtile"),
     # Key([mod], "o", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
-    Key([mod], "o", lazy.spawn("rofi -show drun"), desc="Spawn a command using a prompt widget"),
+    Key(
+        [mod],
+        "o",
+        lazy.spawn("rofi -show drun"),
+        desc="Spawn a command using a prompt widget",
+    ),
+    Key([mod], "a", lazy.spawn("pavucontrol"), desc="Spawn a volume control"),
     Key([mod], "w", lazy.spawn("firefox"), desc="Spawn firefox"),
     # Key([mod], "f", lazy.spawn("pcmanfm"), desc="Spawn file manager"),
-    Key([mod, "shift"], "e", lazy.spawn("i3lock --color='#000000'"), desc="Spawn file manager"),
+    Key(
+        [mod, "shift"],
+        "e",
+        lazy.spawn("i3lock --color='#000000'"),
+        desc="Spawn file manager",
+    ),
+    #    Key(
+    #        [mod, "shift"],
+    #        "p",
+    #        lazy.function(screenshot()),
+    #    ),
+    Key([mod, "shift"], "m", lazy.hide_show_bar(), desc="Toggle top bar"),
+    Key(
+        [mod, "control"],
+        "1",
+        lazy.to_screen(0),
+        desc="Keyboard focus to monitor 1 (left most)",
+    ),
+    Key(
+        [mod, "control"],
+        "2",
+        lazy.to_screen(1),
+        desc="Keyboard focus to monitor 2 (center)",
+    ),
+    Key(
+        [mod, "control"],
+        "3",
+        lazy.to_screen(2),
+        desc="Keyboard focus to monitor 3 (right most)",
+    ),
 ]
 
 groups = [Group(i) for i in "1234567890"]
@@ -80,13 +147,20 @@ for i in groups:
     )
 
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=2),
+    layout.Columns(
+        border_focus="#555555",
+        border_width=2,
+    ),
     layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
     # layout.Matrix(),
-    # layout.MonadTall(),
+    layout.MonadTall(
+        border_focus="#555555",
+        border_width=2,
+        ratio=0.6,
+    ),
     # layout.MonadWide(),
     # layout.RatioTile(),
     # layout.Tile(),
@@ -111,7 +185,7 @@ screens = [
                 widget.GroupBox(highlight_method="block"),
                 # widget.Prompt(),
                 widget.Sep(linewidth=0, padding=10),
-                widget.WindowName(),
+                widget.WindowName(foreground="#000000", background="#000000"),
                 widget.Chord(
                     chords_colors={
                         "launch": ("#ff0000", "#ffffff"),
@@ -123,15 +197,15 @@ screens = [
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
                 widget.Sep(linewidth=0, padding=10),
-                widget.CPU(format='cpu: {load_percent}%', update_interval=5.0),
+                widget.CPU(format="cpu: {load_percent}%", update_interval=5.0),
                 widget.Sep(linewidth=0, padding=10),
-                widget.Memory(measure_mem='G', update_interval=5.0),
+                widget.Memory(measure_mem="G", update_interval=5.0),
                 # widget.Net(),
                 widget.Sep(linewidth=0, padding=10),
                 widget.Battery(
-                    format = ' {percent:2.0%} {char}',
-                    charge_char='ac',
-                    discharge_char='dc',
+                    format=" {percent:2.0%} {char}",
+                    charge_char="ac",
+                    discharge_char="dc",
                 ),
                 widget.Sep(linewidth=0, padding=10),
                 widget.Clock(format="%a %b %d   %H:%M "),
@@ -148,8 +222,15 @@ screens = [
 
 # Drag floating layouts.
 mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
+    Drag(
+        [mod],
+        "Button1",
+        lazy.window.set_position_floating(),
+        start=lazy.window.get_position(),
+    ),
+    Drag(
+        [mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()
+    ),
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
 
@@ -166,6 +247,7 @@ floating_layout = layout.Floating(
         Match(wm_class="makebranch"),  # gitk
         Match(wm_class="maketag"),  # gitk
         Match(wm_class="ssh-askpass"),  # ssh-askpass
+        Match(wm_class="qjackctl"),  # ssh-askpass
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
     ]
@@ -174,10 +256,12 @@ auto_fullscreen = True
 focus_on_window_activation = "smart"
 reconfigure_screens = True
 
+
 @hook.subscribe.startup_once
 def autostart():
-    filePath = os.path.expanduser('~/.config/qtile/autostart.sh')
+    filePath = os.path.expanduser("~/.config/qtile/autostart.sh")
     subprocess.Popen([filePath])
+
 
 # If things like steam games want to auto-minimize themselves when losing
 # focus, should we respect this or not?

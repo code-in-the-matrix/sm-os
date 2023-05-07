@@ -1,12 +1,11 @@
 super + f
-	pcmanfm
+	pcmanfm 
 
 super + p
-	maim --select | xclip -selection clipboard -t image/png
-super + shift + p
-	maim --select "/home/$USER/Pictures/$(date)"
+	maim --select | xclip -selection clipboard -t image/png 
 	
-
+super + shift + s
+    libreoffice /media/swayam/WORK/docs/Schedule.ods
 
 XF86AudioRaiseVolume
 	pactl set-sink-volume @DEFAULT_SINK@ +5%

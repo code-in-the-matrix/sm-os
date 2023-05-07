@@ -1,0 +1,25 @@
+00:00:00.251195 VirtualBox GUI VM Selector Window 6.1.38_Ubuntu r153438 linux.amd64 (Sep  7 2022 11:18:57) release log
+00:00:00.251197 Log opened 2023-05-07T06:01:16.484913000Z
+00:00:00.251197 Build Type: release
+00:00:00.251200 OS Product: Linux
+00:00:00.251201 OS Release: 5.15.0-71-generic
+00:00:00.251201 OS Version: #78~20.04.1-Ubuntu SMP Wed Apr 19 11:26:48 UTC 2023
+00:00:00.251219 DMI Product Name: VivoBook_ASUSLaptop X513EAN_K513EA
+00:00:00.251223 DMI Product Version: 1.0       
+00:00:00.251229 Firmware type: UEFI
+00:00:00.251374 Secure Boot: Disabled
+00:00:00.251399 Host RAM: 15697MB (15.3GB) total, 13647MB (13.3GB) available
+00:00:00.251403 Executable: /usr/lib/virtualbox/VirtualBox
+00:00:00.251403 Process ID: 8569
+00:00:00.251403 Package type: LINUX_64BITS_GENERIC (OSE)
+00:00:00.251423 Qt version: 5.12.8
+00:00:00.266936 GUI: UIMediumEnumerator: Medium-enumeration started...
+00:00:00.266965 GUI: UIMediumEnumerator: Medium-enumeration finished!
+00:00:00.567581 GUI: UIDesktopWidgetWatchdog::sltHandleHostScreenAvailableGeometryCalculated: Screen 0 work area is actually resized to: 0x24 x 1920x1056
+00:14:47.151512 GUI: UIMediumEnumerator: Medium-enumeration finished!
+00:14:47.182167 GUI: UIMediumEnumerator: Medium-enumeration finished!
+00:16:35.463782 GUI: UIMediumEnumerator: Medium with key={{2d5a6e63-7c7b-478d-a4b6-9049461594af}} created
+00:16:35.471548 GUI: UIMediumEnumerator: Medium-enumeration finished!
+00:17:10.446135 GUI: UIMediumEnumerator: Medium-enumeration finished!
+00:17:10.478662 GUI: UIMediumEnumerator: Medium-enumeration finished!
+00:17:10.484818 GUI: UIMediumEnumerator: Medium-enumeration finished!

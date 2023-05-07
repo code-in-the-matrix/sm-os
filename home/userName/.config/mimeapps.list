@@ -8,6 +8,11 @@ x-scheme-handler/jetbrains=jetbrains-toolbox.desktop
 application/pdf=org.pwmt.zathura.desktop
 inode/directory=pcmanfm.desktop
 application/x-code-workspace=pcmanfm.desktop
+image/jpeg=lximage-qt.desktop
+image/png=lximage-qt.desktop
 
 [Added Associations]
-application/pdf=org.pwmt.zathura.desktop;
+application/pdf=org.gnome.Evince.desktop;org.pwmt.zathura.desktop;
+image/jpeg=lximage-qt.desktop;
+inode/directory=notepadqq.desktop;
+image/png=lximage-qt.desktop;
